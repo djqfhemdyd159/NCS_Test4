@@ -1514,7 +1514,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2015471858}
   - component: {fileID: 2015471857}
-  - component: {fileID: 2015471859}
   m_Layer: 0
   m_Name: MapCreator
   m_TagString: Untagged
@@ -1558,20 +1557,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2015471859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015471856}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb0b9a615cf24cd40b4505447faca855, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mapCreator: {fileID: 2015471857}
-  playerTransform: {fileID: 283443373}
 --- !u!1001 &2060349545
 PrefabInstance:
   m_ObjectHideFlags: 0

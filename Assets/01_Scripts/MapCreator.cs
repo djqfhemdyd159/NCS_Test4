@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class MapCreator : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class MapCreator : MonoBehaviour
     public GameObject startTilePrefab;
     public Transform playerTransform;
 
+    public float moveDuration = 0.3f;
 
     void Start()
     {
@@ -41,14 +43,19 @@ public class MapCreator : MonoBehaviour
 
         for (int i = 0; i < tiles.Count; i++)
         {
-            tiles[i].transform.position += new Vector3(0, 0, -2f);
+            tiles[i].transform.DOMove(tiles[i].transform.position + new Vector3(0, 0, -2f), moveDuration);
         }
 
-        GameObject tile = Instantiate(tilePrefab[Random.Range(0, tilePrefab.Count)], new Vector3(0, -0.5f, lastPos.z), Quaternion.identity);
-        tiles.Add(tile);
-        Destroy(tiles[0]);
-        tiles.RemoveAt(0);
+        // 새 타일은 이동이 끝난 뒤 생성되게끔 지연 호출
+        DOVirtual.DelayedCall(moveDuration, () =>
+        {
+            GameObject tile = Instantiate(tilePrefab[Random.Range(0, tilePrefab.Count)], new Vector3(0, -0.5f, lastPos.z), Quaternion.identity);
+            tiles.Add(tile);
+            Destroy(tiles[0]);
+            tiles.RemoveAt(0);
+        });
     }
+
     public void ReverseDestroyAndCreateTile()
     {
         GameObject firstTile = tiles[0];
@@ -56,12 +63,16 @@ public class MapCreator : MonoBehaviour
 
         for (int i = 0; i < tiles.Count; i++)
         {
-            tiles[i].transform.position += new Vector3(0, 0, 2f);
+            tiles[i].transform.DOMove(tiles[i].transform.position + new Vector3(0, 0, 2f), moveDuration);
         }
 
-        GameObject tile = Instantiate(tilePrefab[Random.Range(0, tilePrefab.Count)], new Vector3(0, -0.5f, firstPos.z), Quaternion.identity);
-        tiles.Insert(0,tile);
-        Destroy(tiles[tiles.Count - 1]);
-        tiles.RemoveAt(tiles.Count - 1);
+        // 이동 끝난 뒤 새 타일 생성
+        DOVirtual.DelayedCall(moveDuration, () =>
+        {
+            GameObject tile = Instantiate(tilePrefab[Random.Range(0, tilePrefab.Count)], new Vector3(0, -0.5f, firstPos.z), Quaternion.identity);
+            tiles.Insert(0, tile);
+            Destroy(tiles[tiles.Count - 1]);
+            tiles.RemoveAt(tiles.Count - 1);
+        });
     }
 }
